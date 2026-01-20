@@ -1,6 +1,3 @@
-# Make src a package
-# touch src/__init__.py
-
 from typing import Dict
 
 class Student:
@@ -18,7 +15,7 @@ class Student:
         if not self.marks:
             return "N/A"
         avg = sum(self.marks.values()) / len(self.marks)
-        if avg > 90:
+        if avg >= 90:
             return "A+"
         elif avg >= 80:
             return "A"
@@ -26,6 +23,8 @@ class Student:
             return "B"
         elif avg >= 60:
             return "C"
+        elif avg >= 50:
+            return "D"
         else:
             return "F"
 
@@ -50,6 +49,11 @@ class StudentMarksSystem:
         if student_id not in self.students:
             raise ValueError("Student not found")
         self.students[student_id].add_marks(subject, mark)
+
+    def calculate_grade(self, student_id: int) -> str:
+        if student_id not in self.students:
+            raise ValueError("Student not found")
+        return self.students[student_id].calculate_grade()
 
     def get_report(self, student_id: int) -> str:
         if student_id not in self.students:

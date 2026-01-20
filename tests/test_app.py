@@ -6,13 +6,15 @@ class TestStudent(unittest.TestCase):
         s = Student(1, "Naman")
         s.add_marks("Math", 95)
         s.add_marks("Science", 85)
-        self.assertEqual(s.calculate_grade(), "A")
+        # Average = 90 → A+ ✅
+        self.assertEqual(s.calculate_grade(), "A+")
 
     def test_generate_report(self):
         s = Student(2, "Eshana")
         s.add_marks("Math", 70)
         s.add_marks("Science", 75)
         report = s.generate_report()
+        # Average = 72.5 → B
         self.assertIn("Grade: B", report)
 
 class TestStudentMarksSystem(unittest.TestCase):
@@ -24,6 +26,7 @@ class TestStudentMarksSystem(unittest.TestCase):
         self.sms.add_marks(1, "Math", 90)
         self.sms.add_marks(1, "Science", 80)
         report = self.sms.get_report(1)
+        # Average = 85 → A
         self.assertIn("Grade: A", report)
 
     def test_student_not_found(self):
