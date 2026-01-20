@@ -1,65 +1,29 @@
+from dataclasses import dataclass, field
+from typing import Dict, Optional
+
+@dataclass
 class Student:
-    def __init__(self, student_id, name):
-        self.student_id = student_id
-        self.name = name
-        self.marks = {}
+    roll_no: str
+    name: str
+    marks: Optional[float] = None
 
-    def add_marks(self, subject, mark):
-        """Add marks for a subject"""
-        self.marks[subject] = mark
+@dataclass
+class MarksSystem:
+    students: Dict[str, Student] = field(default_factory=dict)
 
-    def calculate_grade(self):
-        """Calculate grade based on average marks"""
-        if not self.marks:
-            return "N/A"
-        avg = sum(self.marks.values()) / len(self.marks)
-        if avg > 90:
-            return "A+"
-        elif avg >= 80:
-            return "A"
-        elif avg >= 70:
-            return "B"
-        elif avg >= 60:
-            return "C"
-        else:
-            return "F"
+    # Add student
+    def add_student(self, roll_no: str, name: str):
+        if not roll_no or not name:
+            raise ValueError("roll_no and name required")
+        if roll_no in self.students:
+            raise ValueError("student exists")
+        self.students[roll_no] = Student(roll_no, name)
 
-    def generate_report(self):
-        """Return a formatted report for the student"""
-        report = f"Student ID: {self.student_id}\n"
-        report += f"Name: {self.name}\n"
-        report += "Marks:\n"
-        for subject, mark in self.marks.items():
-            report += f"  {subject}: {mark}\n"
-        report += f"Grade: {self.calculate_grade()}\n"
-        return report
-
-
-class StudentMarksSystem:
-    def __init__(self):
-        self.students = {}
-
-    def add_student(self, student_id, name):
-        if student_id in self.students:
-            raise ValueError("Student ID already exists")
-        self.students[student_id] = Student(student_id, name)
-
-    def add_marks(self, student_id, subject, mark):
-        if student_id not in self.students:
-            raise ValueError("Student not found")
-        self.students[student_id].add_marks(subject, mark)
-
-    def get_report(self, student_id):
-        if student_id not in self.students:
-            raise ValueError("Student not found")
-        return self.students[student_id].generate_report()
-
-
-# Optional: run a quick demo
-if __name__ == "__main__":
-    sms = StudentMarksSystem()
-    sms.add_student(1, "Naman")
-    sms.add_marks(1, "Math", 90)
-    sms.add_marks(1, "Science", 85)
-    print(sms.get_report(1))
+    # Add marks
+    def add_marks(self, roll_no: str, marks: float):
+        if roll_no not in self.students:
+            raise KeyError("student not found")
+        if marks < 0 or marks > 100:
+            raise ValueError("marks must be 0..100")
+        self.students[roll_no].marks = marks
 
