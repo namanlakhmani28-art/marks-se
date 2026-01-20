@@ -55,6 +55,19 @@ class StudentMarksSystem:
             raise ValueError("Student not found")
         return self.students[student_id].calculate_grade()
 
+    def generate_report(self) -> str:
+        """Generates a tabular report of all students."""
+        lines = ["ROLL\tNAME\tMARKS\tGRADE"]
+        for student_id, student in self.students.items():
+            marks_str = (
+                ",".join(f"{sub}:{mark}" for sub, mark in student.marks.items())
+                if student.marks else "-"
+            )
+            grade = "-" if not student.marks else self.calculate_grade(student_id)
+            lines.append(f"{student_id}\t{student.name}\t{marks_str}\t{grade}")
+        return "\n".join(lines)
+        
+        
     def get_report(self, student_id: int) -> str:
         if student_id not in self.students:
             raise ValueError("Student not found")
