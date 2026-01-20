@@ -6,7 +6,7 @@ class TestStudent(unittest.TestCase):
         s = Student(1, "Naman")
         s.add_marks("Math", 95)
         s.add_marks("Science", 85)
-        self.assertEqual(s.calculate_grade(), "A")  # Average 90 → "A"
+        self.assertEqual(s.calculate_grade(), "A")
 
     def test_generate_report(self):
         s = Student(2, "Eshana")
@@ -14,7 +14,6 @@ class TestStudent(unittest.TestCase):
         s.add_marks("Science", 75)
         report = s.generate_report()
         self.assertIn("Grade: B", report)
-
 
 class TestStudentMarksSystem(unittest.TestCase):
     def setUp(self):
